@@ -1,21 +1,26 @@
 'use strict';
 
-const rle = function (source) {
-    let dest = "";
-    let i = 0;
-    while (i < source.length) {
+function append(char,count){
+    let result = '';
+    result += count > 1 ? count.toString() : '';
+    return char+result;
+}
 
-        let runLength = 1;
-        while (i + 1 < source.length && source.charAt(i) === source.charAt(i + 1)) {
-            runLength++;
-            i++;
+const rle = (source=> {
+    let dest = '';
+    let count = 0;
+    let buffer='';
+    source.split('').forEach((char)=> {
+        count+=1;
+        if (char === buffer) {
+            return;
         }
-        dest += source.charAt(i);
-        if (runLength > 1) {
-            dest += runLength;
+        if (buffer !== '') {
+            dest += append(buffer, count)
         }
-        i++;
-
-    }
+        buffer = char;
+        count = 0;
+    });
+    dest += append(buffer, count + 1);
     return dest;
-};
+});
