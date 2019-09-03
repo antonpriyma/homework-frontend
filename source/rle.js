@@ -1,26 +1,35 @@
-'use strict';
+"use strict";
 
-function append(char,count){
-    let result = '';
-    result += count > 1 ? count.toString() : '';
-    return char+result;
-}
+/**
+ * @param char
+ * @param entriesCount
+ * @returns {string}
+ */
+const append = (char, entriesCount) => {
+    if (typeof char === "string") {
+        return `${char}${entriesCount > 1 ? entriesCount : ""}`;
+    }
+};
 
-const rle = (source=> {
-    let dest = '';
-    let count = 0;
-    let buffer='';
-    source.split('').forEach((char)=> {
-        count+=1;
-        if (char === buffer) {
-            return;
-        }
-        if (buffer !== '') {
-            dest += append(buffer, count)
-        }
-        buffer = char;
-        count = 0;
+
+/**
+ * @param text
+ * @returns {string}
+ */
+const rle = (text) => {
+    let {encodedText, entriesCount, buffer} = text.split("").reduce((previousValue, char) => {
+        const {encodedText, entriesCount, buffer} = previousValue;
+        return {
+            encodedText: ((char !== buffer) && (buffer)) ? encodedText + append(buffer, entriesCount + 1) : encodedText,
+            buffer: (char !== buffer) ? char : buffer,
+            entriesCount: ((char !== buffer) && (buffer)) ? 0 : entriesCount + 1
+        };
+    }, {
+        encodedText: "",
+        entriesCount: -1,
+        buffer: ""
     });
-    dest += append(buffer, count + 1);
-    return dest;
-});
+
+    return `${encodedText}${append(buffer, entriesCount + 1)}`;
+};
+
