@@ -16,20 +16,24 @@ const append = (char, entriesCount) => {
  * @param text
  * @returns {string}
  */
-const rle = (text) => {
-    let {encodedText, entriesCount, buffer} = text.split("").reduce((previousValue, char) => {
-        const {encodedText, entriesCount, buffer} = previousValue;
-        return {
-            encodedText: ((char !== buffer) && (buffer)) ? encodedText + append(buffer, entriesCount + 1) : encodedText,
-            buffer: (char !== buffer) ? char : buffer,
-            entriesCount: ((char !== buffer) && (buffer)) ? 0 : entriesCount + 1
-        };
-    }, {
-        encodedText: "",
-        entriesCount: -1,
-        buffer: ""
-    });
+let rle = (text) => {
+    if (typeof text === "string") {
+        let {encodedText, entriesCount, buffer} = text.split("").reduce((previousValue, char) => {
+            const {encodedText, entriesCount, buffer} = previousValue;
+            let isNewChar = (char !== buffer);
+            let bufferNotEmty = (buffer !== "");
+            return {
+                encodedText: (isNewChar && bufferNotEmty) ? encodedText + append(buffer, entriesCount + 1) : encodedText,
+                buffer: isNewChar ? char : buffer,
+                entriesCount: (isNewChar && bufferNotEmty) ? 0 : entriesCount + 1
+            };
+        }, {
+            encodedText: "",
+            entriesCount: -1,
+            buffer: ""
+        });
 
-    return `${encodedText}${append(buffer, entriesCount + 1)}`;
+        return `${encodedText}${append(buffer, entriesCount + 1)}`;
+    }
 };
 
