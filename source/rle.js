@@ -13,17 +13,17 @@ const append = (char, entriesCount) => {
 
 
 /**
- * @param text
- * @returns {string}
+ * @param text: Входная строка
+ * @returns {string}: Закодированная строка
  */
 const rle = (text) => {
     if (typeof text === "string") {
         const {encodedText, entriesCount, buffer} = text.split("").reduce((previousValue, char) => {
             const {encodedText, entriesCount, buffer} = previousValue;
-            let isNewChar = (char !== buffer);
-            let bufferNotEmty = (!!buffer);
+            let isNewChar = char !== buffer;
+            let bufferNotEmty = !!buffer;
             return {
-                encodedText: isNewChar && bufferNotEmty ? encodedText + append(buffer, entriesCount + 1) : encodedText,
+                encodedText: isNewChar && bufferNotEmty ? `${encodedText}${append(buffer, entriesCount + 1)}` : encodedText,
                 buffer: isNewChar ? char : buffer,
                 entriesCount: isNewChar && bufferNotEmty ? 0 : entriesCount + 1
             };
