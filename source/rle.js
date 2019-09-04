@@ -20,8 +20,8 @@ const rle = (text) => {
     if (typeof text === "string") {
         const {encodedText, entriesCount, buffer} = text.split("").reduce((previousValue, char) => {
             const {encodedText, entriesCount, buffer} = previousValue;
-            let isNewChar = char !== buffer;
-            let bufferNotEmty = !!buffer;
+            const isNewChar = char !== buffer;
+            const bufferNotEmty = !!buffer;
             return {
                 encodedText: isNewChar && bufferNotEmty ? `${encodedText}${append(buffer, entriesCount + 1)}` : encodedText,
                 buffer: isNewChar ? char : buffer,
